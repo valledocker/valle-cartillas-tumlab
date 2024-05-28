@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  cartillas-backend:
+    image: vallelabs/cartillas-back:0.1.6
+    container_name: cartillas-backend
+    restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      - "tumlab.local:192.168.4.1"
+    environment:
+      ACCESS_TOKEN_SECRET : 0!u/]u@8?@i2$)A'?]2_LU*r4Rznt#
+      DB_DATABASE : cartillas
+      DB_HOST : host.docker.internal
+      DB_PASSWORD : Tumlab2022*
+      DB_PORT : 3306
+      DB_USER : root
+      REFRESH_TOKEN_SECRET : V'u@1-kdq|9vNdssq8I&l=IPM1h+Ja
+    ports:
+      - "3005:3000"
+    networks:
+      - cartillas-net
+  cartillas-frontend:
+    image: vallelabs/cartillas-front:1.0.0
+    container_name: cartillas-frontend
+    restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      - "tumlab.local:192.168.4.1"
+    environment:
+      NEXT_PUBLIC_API_URI : http://tumlab.local:3005
+    ports:
+      - "3004:3000"
+    networks:
+      - cartillas-net
+
+networks:
+  cartillas-net:
+    driver: bridge
